@@ -1,0 +1,20 @@
+.container {
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap:10px;
+    border:2px solid black;
+    width:350px;
+    height: 350px;
+    margin:auto;
+    margin-top: 50px;
+}
+
+.boxes{
+    background-color: lightblue;
+    
+}
+
+.msg {
+    color:black;
+}

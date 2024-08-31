@@ -12,6 +12,7 @@ const GameBoard = (function() {
     function updateBoard(index, marker) {
         if (index >= 0 && index < gameboard.length && gameboard[index] === "") {
             gameboard[index] = marker;
+            DomDisplayController.renderGameboard(index,marker);
             return true;
         }
         else{
@@ -21,6 +22,9 @@ const GameBoard = (function() {
 
     return { gameboard, printBoard, updateBoard };
 })();
+
+
+
 
 
 function Players (fullName, mark) {
@@ -33,6 +37,10 @@ function Players (fullName, mark) {
     }
 }
 
+
+
+
+
 function GameController() {
     let user1 = 'Alberto Quintero';
     let user2 = 'Andrea Zarate';
@@ -44,9 +52,45 @@ function GameController() {
 
     let currPlayer = playerOne;
     
-    let gameActive = true;
-    while (gameActive) {
-        let move = getMove();
+    
+    const hoverOver = document.querySelector('.container');
+    hoverOver.addEventListener('mouseover', (e) => {
+        if (e.target && e.target.id) { // Check if the target has an ID
+            const hoverElem = document.getElementById(e.target.id);
+            if (hoverElem) { // Check if the element exists
+                hoverElem.style.backgroundColor = 'red';
+            }
+        }
+    });
+
+    hoverOver.addEventListener('mouseout', (e) => {
+        if (e.target && e.target.id) { // Check if the target has an ID
+            const unhoverElem = document.getElementById(e.target.id);
+            if (unhoverElem) { // Check if the element exists
+            unhoverElem.style.backgroundColor = '';
+            }
+    }
+    });
+   
+    let move;
+    DomDisplayController.renderMessages(`${currPlayer.name} choose a cell`)
+   
+    const clickCell = document.querySelector('.container');
+    clickCell.addEventListener('click', (e) => {
+        const idToIndexMap = {
+            'zero': 0,
+            'one': 1,
+            'two': 2,
+            'three': 3,
+            'four': 4,
+            'five': 5,
+            'six': 6,
+            'seven': 7,
+            'eight': 8
+        };
+    
+        move = idToIndexMap[e.target.id];
+
         if (GameBoard.updateBoard(move, currPlayer.marker)) {
             GameBoard.printBoard();
             const winningArr = [
@@ -66,8 +110,8 @@ function GameController() {
                     }
                 }
                 if (markerMatch) {
-                    console.log(`${currPlayer.name} wins!`);
-                    gameActive = false;
+                    DomDisplayController.renderMessages(`${currPlayer.name} wins!`);
+                    
                     gameWon = true;
                     break;
                 }
@@ -82,22 +126,82 @@ function GameController() {
                     }
                 }
                 if(count == 9){
-                    alert('The game resulted in a tie!')
-                    gameActive = false;
+                    DomDisplayController.renderMessages('Its a tie!')
+                    return;
                 }
                 currPlayer = (currPlayer === playerOne) ? playerTwo : playerOne;
+                DomDisplayController.renderMessages(`${currPlayer.name} choose a cell`)
             }
 
         } 
         else {
-            alert('invalid option');
+            DomDisplayController.renderMessages('invalid option');
+            console.log('this should say invalid');
         }
+    
+    });
+    function getMove() {
+        
+        
     }
 
-    function getMove() {
-        let currMove = prompt(`${currPlayer.name}, choose where you want your move to be (0-8):`);
-        return parseInt(currMove, 10); // Convert string input to a number
-    }
 }
 
+
+
+
+const DomDisplayController = (function(){
+    const cells = document.querySelectorAll('.boxes');
+    const messages = document.querySelector('.msg');
+    function renderGameboard(index,marker){
+        if (index == 0){
+            const box0 = document.querySelector('#zero');
+            box0.textContent = marker;
+        }
+        else if(index == 1) {
+            const box1 = document.querySelector('#one');
+            box1.textContent = marker;
+        }
+        else if(index == 2) {
+            const box2 = document.querySelector('#two');
+            box2.textContent = marker;
+        }
+        else if(index == 3) {
+            const box3 = document.querySelector('#three');
+            box3.textContent = marker;
+        }
+        else if(index == 4) {
+            const box4 = document.querySelector('#four');
+            box4.textContent = marker;
+        }
+        else if(index == 5) {
+            const box5 = document.querySelector('#five');
+            box5.textContent = marker;
+        }
+        else if(index == 6) {
+            const box6 = document.querySelector('#six');
+            box6.textContent = marker;
+        }
+        else if(index == 7) {
+            const box7 = document.querySelector('#seven');
+            box7.textContent = marker;
+        }
+        else{
+            const box8 = document.querySelector('#eight');
+            box8.textContent = marker;
+        }
+        
+    }
+
+    function renderMessages(message){
+        messages.textContent = message;
+    }
+
+    
+
+    return {renderGameboard, renderMessages};
+})();
+
+
 GameController();
+
