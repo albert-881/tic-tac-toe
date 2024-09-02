@@ -42,8 +42,8 @@ function Players (fullName, mark) {
 
 
 function GameController() {
-    let user1 = 'Alberto Quintero';
-    let user2 = 'Andrea Zarate';
+    let user1 = 'The user';
+    let user2 = 'Computer';
 
     const playerOne = Players(user1, "X");
     const playerTwo = Players(user2, "O");
@@ -58,7 +58,7 @@ function GameController() {
         if (e.target && e.target.id) { // Check if the target has an ID
             const hoverElem = document.getElementById(e.target.id);
             if (hoverElem) { // Check if the element exists
-                hoverElem.style.backgroundColor = 'red';
+                hoverElem.style.backgroundColor = '#fef8dd';
             }
         }
     });
@@ -71,9 +71,20 @@ function GameController() {
             }
     }
     });
+
+    const clearBtn = document.querySelector('#restart');
+    clearBtn.addEventListener('click', (e) => {
+        GameBoard.gameboard.forEach((_, index, array) => {
+            array[index] = ""; // Clear each element in the array
+        });
+        const allBoxes = document.querySelectorAll('.boxes');
+        allBoxes.forEach(box => {
+            box.textContent = ""; // Clear the content of each box
+        });
+    });
    
     let move;
-    DomDisplayController.renderMessages(`${currPlayer.name} choose a cell`)
+    DomDisplayController.renderMessages(`Welcome to Tic Tac Toe`)
    
     const clickCell = document.querySelector('.container');
     clickCell.addEventListener('click', (e) => {
@@ -88,9 +99,11 @@ function GameController() {
             'seven': 7,
             'eight': 8
         };
-    
+        const changeColor = document.getElementById(e.target.id);
+        changeColor.style.backgroundColor = '#f7d8ba';
         move = idToIndexMap[e.target.id];
-
+        checkWin(move);
+        function checkWin (move) {
         if (GameBoard.updateBoard(move, currPlayer.marker)) {
             GameBoard.printBoard();
             const winningArr = [
@@ -98,7 +111,8 @@ function GameController() {
                 [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
                 [0, 4, 8], [2, 4, 6]             // Diagonals
             ];
-
+            
+           
             let gameWon = false;
             for (let i = 0; i < winningArr.length; i++) {
                 let winCombination = winningArr[i];
@@ -129,29 +143,42 @@ function GameController() {
                     DomDisplayController.renderMessages('Its a tie!')
                     return;
                 }
-                currPlayer = (currPlayer === playerOne) ? playerTwo : playerOne;
-                DomDisplayController.renderMessages(`${currPlayer.name} choose a cell`)
-            }
+                else{
+                    currPlayer = (currPlayer === playerOne) ? playerTwo : playerOne;
+                    DomDisplayController.renderMessages('Beat the Computer!')
 
-        } 
+                    if(currPlayer == playerTwo){
+                        let ran = Math.random() * 9;
+                        let int_ran = parseInt(ran);
+                        checkWin(int_ran);
+                    }
+                }
+            }
+            
+        }
         else {
             DomDisplayController.renderMessages('invalid option');
             console.log('this should say invalid');
+
+            if (currPlayer == playerTwo){
+                let ran = Math.random() * 9;
+                let int_ran = parseInt(ran);
+                checkWin(int_ran);
+            }
         }
-    
-    });
-    function getMove() {
-        
         
     }
-
+        
+    
+    });
+    
 }
 
 
 
 
 const DomDisplayController = (function(){
-    const cells = document.querySelectorAll('.boxes');
+    
     const messages = document.querySelector('.msg');
     function renderGameboard(index,marker){
         if (index == 0){

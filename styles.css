@@ -1,9 +1,18 @@
+body{
+    background-color: #CAf1de;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    
+}
+
 .container {
     display:grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     gap:10px;
-    border:2px solid black;
+    
     width:350px;
     height: 350px;
     margin:auto;
@@ -11,10 +20,23 @@
 }
 
 .boxes{
-    background-color: lightblue;
-    
+    background-color: #ACDDDE;
+    font-size: 2rem;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .msg {
-    color:black;
+    color:gray;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+
+#restart {
+    background-color: #ACDDDE;
+    border: none;
+    width: 100px;
+    height: 40px;
+    border-radius: 15px;
 }
